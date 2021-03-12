@@ -1,0 +1,10 @@
+{% extends "structure.html" %}
+
+{% block head %}<title>Dashboard</title>{% endblock %}
+
+{% block body %}
+    <h1>This is dashboard page</h1>
+    {% for t in table %}
+        <p>{{t[1]}} is {{t[3]}} years old</p>
+    {% endfor %}
+{% endblock %}

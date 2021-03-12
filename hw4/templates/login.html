@@ -3,5 +3,10 @@
 {% block head %}<title>Log In</title>{% endblock %}
 
 {% block body %}
-    <p>adasda</p>
+    <h1>This is Log In page</h1>
+    <form action="/login", method="post">
+        <input type="text" name="username" id="username" placeholder="Username">
+        <input type="password" name="password" id="password" placeholder="Password">
+        <input type="submit">
+    </form>
 {% endblock %}

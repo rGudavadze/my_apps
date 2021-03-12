@@ -19,7 +19,7 @@ def terms():
 
 @app.route('/privacy')
 def privacy():
-    return render_template('pricavy.html')
+    return render_template('privacy.html')
 
 @app.route('/register', methods=["GET", "POST"])
 def register():
@@ -27,10 +27,8 @@ def register():
         username = request.form.get('username')
         password = request.form.get('password')
         age = request.form.get('age')
-        if username and password and age:
-            register_user(username, password, age)
-            return redirect(url_for('/login'))
-        return render_template('register.html', message='Please enter all label')
+        msg = model.register_user(username, password, age)
+        return render_template('register.html', message=msg)
     else:
         return render_template('register.html', message="Please register")
 
@@ -40,7 +38,8 @@ def login():
 
 @app.route('/dashboard')
 def dashboard():
-    return render_template('dashboard.html')
+    table = model.get_dashboard()
+    return render_template('dashboard.html', table=table)
 
 if __name__ == "__main__":
     app.run(debug=True)

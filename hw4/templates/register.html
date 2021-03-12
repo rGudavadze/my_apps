@@ -1,0 +1,18 @@
+{% extends "structure.html" %}
+
+{% block head %}<title>Register</title>{% endblock %}
+
+{% block body %}
+    
+    <h1>Please Register Here:</h1>
+    <br><br>
+    <form action='/login', method='post'>
+        <input type="text", name="username", placeholder="Username" id="username">
+        <input type="password" name="password" placeholder="Password" id="password">
+        <input type="number" name="age" placeholder="Age" id="age">
+        <input type="submit">
+    </form>
+    <br><br>
+    {{message}}
+
+{% endblock %}

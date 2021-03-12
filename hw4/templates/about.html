@@ -1,0 +1,27 @@
+{% extends "structure.html" %}
+
+{% block head %}
+    <title>About Us</title>
+    <style>
+        .profile{
+            display: flex;
+            flex-wrap: wrap;
+        }
+        img{
+            width: 100px;
+        }
+        p{
+            margin-right: 20px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div>
+        <h1>Roma</h1>
+    </div>
+    <div class="profile">
+        <p>I am Roma,<br> and I want to become <br> software engineer.</p>
+        <img src="static/img/roma.jpeg" alt="roma">
+    </div>
+{% endblock %}

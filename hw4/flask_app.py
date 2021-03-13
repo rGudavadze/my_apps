@@ -4,22 +4,15 @@ import model
 
 app = Flask(__name__)
 app.secret_key = "mujluguni"
+username = ''
+user = ''
 
 @app.route('/')
 def home():
+    if 'username' in session:
+        g.user = session['username']
+        return redirect(url_for('dashboard'))
     return render_template('home.html')
-
-@app.route('/about', methods=['GET'])
-def about():
-    return render_template('about.html')
-
-@app.route('/terms', methods=['GET'])
-def terms():
-    return render_template('terms.html')
-
-@app.route('/privacy')
-def privacy():
-    return render_template('privacy.html')
 
 @app.route('/register', methods=["GET", "POST"])
 def register():
@@ -34,12 +27,52 @@ def register():
 
 @app.route('/login', methods=['GET' ,'POST'])
 def login():
-    return render_template('login.html')
+    if request.method == 'POST':
+        session.pop('username', None)
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        db_psw = model.check_user(username)
+        if db_psw == password:
+            session['username'] = username
+            return redirect(url_for('dashboard'))
+        return render_template('login.html', message="password incorrect")
+    else:
+        return render_template('login.html', message='Please Log In')
+
+@app.before_request
+def before_request():
+    g.username = None
+    if 'username' in session:
+        g.username = session['username']
 
 @app.route('/dashboard')
 def dashboard():
     table = model.get_dashboard()
     return render_template('dashboard.html', table=table)
+
+@app.route('/about', methods=['GET'])
+def about():
+    return render_template('about.html')
+
+@app.route('/terms', methods=['GET'])
+def terms():
+    return render_template('terms.html')
+
+@app.route('/privacy')
+def privacy():
+    return render_template('privacy.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('home'))
+
+@app.route('/getsession')
+def getsession():
+    if 'username' in session:
+        return session['username']
+    return redirect(url_for('login'))
 
 if __name__ == "__main__":
     app.run(debug=True)

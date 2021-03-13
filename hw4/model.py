@@ -16,6 +16,18 @@ def register_user(username, password, age):
         return "username already exist"
     return "You've succesfully signed up"
 
+def check_user(username):
+    conn = sqlite3.connect('table.db', check_same_thread=False)
+    cursor = conn.cursor()
+    cursor.execute(f"""SELECT password FROM users WHERE username='{username}'""")
+    password = cursor.fetchone()[0]
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return password
+
 def get_dashboard():
     conn = sqlite3.connect('table.db', check_same_thread=False)
     cursor = conn.cursor()

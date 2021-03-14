@@ -4,9 +4,22 @@
 
 {% block body %}
     <h1>This is dashboard page</h1>
-    {% for t in table %}
-        <p>{{t[1]}} is {{t[3]}} years old</p>
-    {% endfor %}
+    <table>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Username</th>
+            <th scope="col">Email</th>
+            <th scope="col">Age</th>
+        </tr>
+        {% for t in table %}
+            <tr>
+                <td>{{ t[0] }}</td>
+                <td>{{ t[1] }}</td>
+                <td>{{ t[2] }}</td>
+                <td>{{ t[3] }}</td>
+            </tr>
+        {% endfor %}
+    </table>
     <br><br>
     <a href="/logout">Log Out</a>
 {% endblock %}

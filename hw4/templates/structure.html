@@ -1,9 +1,30 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link href="static/css/structure.css" rel="stylesheet">
         {% block head %}{% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <div class="header">
+            <nav>
+                <ul>
+                    <li class="nav">
+                        <a href="{{ url_for('home') }}">Home</a>
+                    </li>
+                    <li class="nav">
+                        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                    </li>
+                    <li class="nav">
+                        <a href="{{ url_for('terms') }}">Terms</a>
+                    </li>
+                    <li class="nav">
+                        <a href="{{ url_for('privacy') }}">Privacy</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="main">
+            {% block body %}{% endblock %}
+        </div>
     </body>
 </html>

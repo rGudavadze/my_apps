@@ -5,10 +5,12 @@
 {% block body %}
     <h1>This is Log In page</h1>
     <form action="/login", method="post">
-        <input type="text" name="username" id="username" placeholder="Username">
-        <input type="password" name="password" id="password" placeholder="Password">
-        <input type="submit">
+        <input type="email" name="email" class="email" placeholder="email">
+        <br>
+        <input type="password" name="password" class="password" placeholder="Password">
+        <br>
+        <input class="but" type="submit">
     </form>
     <br>
-    {{message}}
+    {{ message }}
 {% endblock %}

@@ -18,10 +18,14 @@ def home():
 def register():
     if request.method == 'POST':
         username = request.form.get('username')
+        email = request.form.get('email')
         password = request.form.get('password')
         age = request.form.get('age')
-        msg = model.register_user(username, password, age)
-        return render_template('register.html', message=msg)
+        if username and email and password and age:
+            msg = model.register_user(username, email, password, age)
+            return redirect(url_for('dashboard'))
+        else:
+            return render_template('register.html', message="Enter all field")
     else:
         return render_template('register.html', message="Please register")
 
@@ -29,14 +33,16 @@ def register():
 def login():
     if request.method == 'POST':
         session.pop('username', None)
-        username = request.form.get('username')
+        email = request.form.get('email')
         password = request.form.get('password')
-
-        db_psw = model.check_user(username)
-        if db_psw == password:
-            session['username'] = username
-            return redirect(url_for('dashboard'))
-        return render_template('login.html', message="password incorrect")
+        if email and password:
+            db_user = model.check_user(email)
+            if db_user[1] == password:
+                session['username'] = db_user[0]
+                return redirect(url_for('dashboard'))
+            return render_template('login.html', message="Email or Password incorrect")
+        else:
+            return render_template('login.html', message="Enter all fields")
     else:
         return render_template('login.html', message='Please Log In')
 

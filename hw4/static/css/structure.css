@@ -1,0 +1,35 @@
+body{
+    background-color: #212121;
+    color: white;
+    text-align: center;
+    font-family: sans-serif;
+}
+.username, .email, .password, .age{
+    height: 40px;
+    width: 300px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+.but{
+    height: 40px;
+    width: 300px;
+    margin-bottom: 10px;
+    background-color: grey;
+    border-radius: 10px;
+}
+.nav{
+    display: inline;
+    float: left;
+    margin: 10px 20px;
+}
+.header{
+    display: flex;
+    margin-bottom: 50p;
+}
+a{
+    color: gray;
+}
+table{
+    margin: 30px;
+    color: white;
+}

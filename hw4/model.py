@@ -1,13 +1,13 @@
 import sqlite3
 
-def register_user(username, password, age):
+def register_user(username, email, password, age):
     conn = sqlite3.connect('table.db', check_same_thread=False)
     cursor = conn.cursor()
     cursor.execute(f"""SELECT * FROM users WHERE username='{username}';""")
-    db_username = cursor.fetchone()
-    if db_username is None:
-        cursor.execute(f"""INSERT INTO users (username, password, age)
-        VALUES('{username}', '{password}', '{age}');""")
+    db_user = cursor.fetchone()
+    if db_user is None:
+        cursor.execute(f"""INSERT INTO users (username, email, password, age)
+        VALUES('{username}','{email}', '{password}', '{age}');""")
         conn.commit()
         cursor.close()
         conn.close()
@@ -16,17 +16,20 @@ def register_user(username, password, age):
         return "username already exist"
     return "You've succesfully signed up"
 
-def check_user(username):
+def check_user(email):
     conn = sqlite3.connect('table.db', check_same_thread=False)
     cursor = conn.cursor()
-    cursor.execute(f"""SELECT password FROM users WHERE username='{username}'""")
-    password = cursor.fetchone()[0]
+    cursor.execute(f"""SELECT username, password FROM users WHERE email='{email}'""")
+    user = cursor.fetchone()
 
     conn.commit()
     cursor.close()
     conn.close()
 
-    return password
+    if user:
+        return user
+    else:
+        return ["", ""]
 
 def get_dashboard():
     conn = sqlite3.connect('table.db', check_same_thread=False)

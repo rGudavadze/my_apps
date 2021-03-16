@@ -1,3 +1,4 @@
+from datetime import datetime
 import sqlite3
 
 def register_user(username, email, password, age):
@@ -34,7 +35,7 @@ def check_user(email):
 def get_dashboard():
     conn = sqlite3.connect('table.db', check_same_thread=False)
     cursor = conn.cursor()
-    cursor.execute("""SELECT * FROM users;""")
+    cursor.execute("""SELECT * FROM posts ORDER BY date DESC;""")
     tb = cursor.fetchall()
     
     conn.commit()
@@ -42,3 +43,18 @@ def get_dashboard():
     conn.close()
 
     return tb
+
+
+def do_post(user, post):
+    conn = sqlite3.connect('table.db', check_same_thread=False)
+    cursor = conn.cursor()
+    cursor.execute(f"""SELECT pk FROM users WHERE username = '{user}'""")
+    user_id = cursor.fetchone()[0]
+
+    now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+
+    cursor.execute(f"""INSERT INTO posts (user_id, post, date) VALUES ('{user_id}', '{post}', '{now}');""")
+
+    conn.commit()
+    cursor.close()
+    conn.close()

@@ -52,10 +52,17 @@ def before_request():
     if 'username' in session:
         g.username = session['username']
 
-@app.route('/dashboard')
+@app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
-    table = model.get_dashboard()
-    return render_template('dashboard.html', table=table)
+    if request.method == "POST":
+        user = session['username']
+        post = request.form.get('post')
+        if post:
+            model.do_post(user, post)
+        return redirect(url_for("dashboard"))
+    else:
+        table = model.get_dashboard()
+        return render_template('dashboard.html', table=table)
 
 @app.route('/about', methods=['GET'])
 def about():

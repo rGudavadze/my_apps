@@ -4,7 +4,7 @@ body{
     text-align: center;
     font-family: sans-serif;
 }
-.username, .email, .password, .age{
+.username, .email, .password, .age, .post{
     height: 40px;
     width: 300px;
     margin-bottom: 10px;

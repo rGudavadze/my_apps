@@ -64,6 +64,12 @@ def dashboard():
         table = model.get_dashboard()
         return render_template('dashboard.html', table=table)
 
+@app.route('/delete', methods=['POST'])
+def delete():
+    post = request.form.get("post")
+    model.delete_post(post)
+    return redirect(url_for('dashboard'))
+
 @app.route('/about', methods=['GET'])
 def about():
     return render_template('about.html')

@@ -58,3 +58,12 @@ def do_post(user, post):
     conn.commit()
     cursor.close()
     conn.close()
+
+def delete_post(post_id):
+    conn = sqlite3.connect('table.db', check_same_thread=False)
+    cursor = conn.cursor()
+    cursor.execute(f"DELETE FROM posts WHERE post_id={post_id}")
+
+    conn.commit()
+    cursor.close()
+    conn.close()

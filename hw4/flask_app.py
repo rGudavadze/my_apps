@@ -11,7 +11,6 @@ user = ''
 def home():
     if 'username' in session:
         g.user = session['username']
-        return redirect(url_for('dashboard'))
     return render_template('home.html')
 
 @app.route('/register', methods=["GET", "POST"])
@@ -23,7 +22,9 @@ def register():
         age = request.form.get('age')
         if username and email and password and age:
             msg = model.register_user(username, email, password, age)
-            return redirect(url_for('dashboard'))
+            session.pop('username', None)
+            session['username'] = username
+            return redirect(url_for('home'))
         else:
             return render_template('register.html', message="Enter all field")
     else:
@@ -61,8 +62,12 @@ def dashboard():
             model.do_post(user, post)
         return redirect(url_for("dashboard"))
     else:
-        table = model.get_dashboard()
-        return render_template('dashboard.html', table=table)
+        if 'username' in session:
+            user = session['username']
+            table = model.get_dashboard(user)
+            return render_template('dashboard.html', table=table)
+        else:
+            return redirect(url_for('login'))
 
 @app.route('/delete', methods=['POST'])
 def delete():

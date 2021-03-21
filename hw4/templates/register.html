@@ -4,7 +4,7 @@
 
 {% block body %}
     
-    <h1>Please Register Here:</h1>
+    <h1>Sign Up</h1>
     <br><br>
     <form action='/register', method='post'>
         <input type="username", name="username", placeholder="username" class="username">
@@ -15,10 +15,10 @@
         <br>
         <input type="number" name="age" placeholder="Age" class="age">
         <br>
-        <input class="but" type="submit" value="Register">
+        <button type="submit" class="but btn btn-success">Sign Up</button>
     </form>
-    <br><br>
+    <br>
     <p>{{message}}</p>
-    <a href="/login">Log In</a>
+    <p>Already have account? <a href="/login"> Log In</a></p>
 
 {% endblock %}

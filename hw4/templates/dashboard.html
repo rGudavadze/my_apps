@@ -4,26 +4,24 @@
 
 {% block body %}
     <h1>This is dashboard page</h1>
-
+    <br>
     <form action="/dashboard" method="post">
         <input type="text" name="post" placeholder="Post Here" class="post">
         <br>
-        <input class="but" type="submit" value="Post">
+        <button type="submit" class="but btn btn-primary">Post</button>
     </form>
-
         <ul>
-        <hr>
         {% for t in table %}
-            <form method="post" action="/delete">
-                <h2><a href="#">{{t[2]}}</a></h2>
-                <p>({{t[3]}})</p>
+        <hr>
+            <form action="/delete" method="post">
+                <h4>{{t[2]}}</h4>
+                <p>Post from "{{t[5]}}" on {{t[3]}}</p>
+                
                 <input type="hidden" value="{{ t[0] }}" name="post">
-                <input type="submit" value="delete">
+                <button type="submit" class="btn btn-danger">Delete</button>
             </form>
 
         {% endfor %}
         </ul>
     </table>
-    <br><br>
-    <a href="/logout">Log Out</a>
 {% endblock %}

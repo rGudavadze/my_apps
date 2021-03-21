@@ -18,7 +18,8 @@ cursor.execute(
         post_id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER,
         post TEXT,
-        date TEXT
+        date TEXT,
+        FOREIGN KEY (user_id) REFERENCES users (pk)
         );"""
 )
 

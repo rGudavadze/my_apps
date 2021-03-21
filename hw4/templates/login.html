@@ -3,14 +3,17 @@
 {% block head %}<title>Log In</title>{% endblock %}
 
 {% block body %}
-    <h1>This is Log In page</h1>
+    <h1>Log In</h1>
+    <br>
     <form action="/login", method="post">
+
         <input type="email" name="email" class="email" placeholder="email">
         <br>
         <input type="password" name="password" class="password" placeholder="Password">
         <br>
-        <input class="but" type="submit" value="Log In">
+        <button type="submit" class="but btn btn-success">Log In</button>
     </form>
     <br>
-    {{ message }}
+    <p>{{ message }}</p>
+    <p>Don't have account? <a href="/register">Sign Up</a></p>
 {% endblock %}

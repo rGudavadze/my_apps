@@ -69,3 +69,19 @@ def delete_post(post_id):
     conn.commit()
     cursor.close()
     conn.close()
+
+def admin_dashboard():
+    conn = sqlite3.connect('table.db', check_same_thread=False)
+    cursor = conn.cursor()
+    cursor.execute("""SELECT post FROM posts ORDER BY date DESC""")
+    posts = cursor.fetchall()
+    cursor.execute("""SELECT COUNT(*) FROM users""")
+    users_count = cursor.fetchone()[0]
+    cursor.execute("""SELECT COUNT(*) FROM posts""")
+    lists_count = cursor.fetchone()[0]
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return posts, users_count, lists_count

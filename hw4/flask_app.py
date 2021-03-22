@@ -92,6 +92,15 @@ def logout():
     session.pop('username', None)
     return redirect(url_for('home'))
 
+@app.route('/admin', methods=['GET', 'POST'])
+def admin_login():
+    return render_template('admin_login.html')
+
+@app.route('/admin_dashboard')
+def admin_dashboard():
+    posts, users_count, lists_count = model.admin_dashboard()
+    return render_template('admin_dashboard.html', posts=posts, users_count=users_count, lists_count=lists_count)
+
 @app.route('/getsession')
 def getsession():
     if 'username' in session:

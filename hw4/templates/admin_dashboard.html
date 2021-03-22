@@ -1,0 +1,20 @@
+{% extends "structure.html" %}
+
+{% block head %}<title>Admin Dashboard</title>{% endblock %}
+
+{% block body %}
+    <h1>This is dashboard page for Administrator</h1>
+    <br>
+    <h3>Total user signups: {{ users_count }}</h3>
+    <h3>Total signups in 24 hours: {{  }}</h3>
+    <h3>Total lists created: {{ lists_count }}</h3>
+    <br>
+    <h3>Posts in last 24 hour: </h3>
+        <ul>
+        {% for post in posts %}
+        <hr>
+            <h5>{{ post[0] }}</h5>
+        {% endfor %}
+        </ul>
+    </table>
+{% endblock %}

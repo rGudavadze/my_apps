@@ -1,0 +1,23 @@
+{% extends "structure.html" %}
+
+{% block head %}<title>All Users</title>{% endblock %}
+
+{% block body %}
+    <h1>All signed up Users</h1>
+    <br>
+    <table>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Age</th>
+        </tr>
+        {% for user in users %}
+        <tr>
+            <td>{{ user[0] }}</td>
+            <td>{{ user[1] }}</td>
+            <td>{{ user[2] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+        
+{% endblock %}

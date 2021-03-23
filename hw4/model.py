@@ -7,8 +7,9 @@ def register_user(username, email, password, age):
     cursor.execute(f"""SELECT * FROM users WHERE username="{username}";""")
     db_user = cursor.fetchone()
     if db_user is None:
-        cursor.execute(f"""INSERT INTO users (username, email, password, age)
-        VALUES("{username}","{email}", "{password}", "{age}");""")
+        now = datetime.now()
+        cursor.execute(f"""INSERT INTO users (username, email, password, age, reg_date)
+        VALUES("{username}","{email}", "{password}", "{age}", "{now}");""")
         conn.commit()
         cursor.close()
         conn.close()
@@ -37,7 +38,7 @@ def get_dashboard(user):
     cursor = conn.cursor()
     cursor.execute(f"""SELECT pk FROM users WHERE username="{user}";""")
     user_id = cursor.fetchone()[0]
-    cursor.execute(f"""SELECT * FROM posts JOIN users ON user_id=pk WHERE user_id={user_id} ORDER BY date DESC;""")
+    cursor.execute(f"""SELECT * FROM posts JOIN users ON user_id=pk WHERE user_id={user_id} ORDER BY reg_date DESC;""")
     user_posts = cursor.fetchall()
     
     conn.commit()
@@ -53,9 +54,9 @@ def do_post(user, post):
     cursor.execute(f"""SELECT pk FROM users WHERE username = "{user}";""")
     user_id = cursor.fetchone()[0]
 
-    now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    now = datetime.now()
 
-    cursor.execute(f"""INSERT INTO posts (user_id, post, date) VALUES ("{user_id}", "{post}", "{now}");""")
+    cursor.execute(f"""INSERT INTO posts (user_id, post, post_date) VALUES ("{user_id}", "{post}", "{now}");""")
 
     conn.commit()
     cursor.close()
@@ -64,7 +65,7 @@ def do_post(user, post):
 def delete_post(post_id):
     conn = sqlite3.connect('table.db', check_same_thread=False)
     cursor = conn.cursor()
-    cursor.execute(f"""DELETE FROM posts WHERE post_id={post_id}""")
+    cursor.execute(f"""DELETE FROM posts WHERE post_id={post_id};""")
 
     conn.commit()
     cursor.close()
@@ -73,7 +74,7 @@ def delete_post(post_id):
 def admin_dashboard():
     conn = sqlite3.connect('table.db', check_same_thread=False)
     cursor = conn.cursor()
-    cursor.execute("""SELECT post FROM posts ORDER BY date DESC""")
+    cursor.execute("""SELECT post FROM posts ORDER BY post_date DESC;""")
     posts = cursor.fetchall()
     cursor.execute("""SELECT COUNT(*) FROM users""")
     users_count = cursor.fetchone()[0]
@@ -85,3 +86,14 @@ def admin_dashboard():
     conn.close()
 
     return posts, users_count, lists_count
+
+def users_for_admin():
+    conn = sqlite3.connect('table.db', check_same_thread=False)
+    cursor = conn.cursor()
+    cursor.execute("""SELECT username, email, age FROM users;""")
+    users = cursor.fetchall()
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return users

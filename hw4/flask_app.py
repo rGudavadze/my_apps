@@ -96,6 +96,11 @@ def logout():
 def admin_login():
     return render_template('admin_login.html')
 
+@app.route('/admin/users')
+def admin_users():
+    users = model.users_for_admin()
+    return render_template('admin_users.html', users=users)
+
 @app.route('/admin_dashboard')
 def admin_dashboard():
     posts, users_count, lists_count = model.admin_dashboard()

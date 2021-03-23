@@ -10,7 +10,8 @@ cursor.execute(
         username VARCHAR(16),
         email VARCHAR(32),
         password VARCHAR(32),
-        age INTEGER);"""
+        age INTEGER,
+        reg_date datetime);"""
 )
 
 cursor.execute(
@@ -18,7 +19,7 @@ cursor.execute(
         post_id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER,
         post TEXT,
-        date TEXT,
+        post_date datetime,
         FOREIGN KEY (user_id) REFERENCES users (pk)
         );"""
 )

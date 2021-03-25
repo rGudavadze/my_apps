@@ -96,10 +96,21 @@ def logout():
 def admin_login():
     return render_template('admin_login.html')
 
-@app.route('/admin/users')
+@app.route('/admin_users')
 def admin_users():
     users = model.users_for_admin()
     return render_template('admin_users.html', users=users)
+
+@app.route('/admin_users/<user>')
+def user_info(user):
+    info = model.about_user(user)
+    return render_template("user_info.html", user=info)
+
+@app.route('/delete/<user>', methods=['POST'])
+def delete_user(user):
+    username = request.form.get('user')
+    model.delete_user_info(username)
+    return redirect(url_for('admin_users'))
 
 @app.route('/admin_dashboard')
 def admin_dashboard():

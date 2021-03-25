@@ -90,10 +90,33 @@ def admin_dashboard():
 def users_for_admin():
     conn = sqlite3.connect('table.db', check_same_thread=False)
     cursor = conn.cursor()
-    cursor.execute("""SELECT username, email, age FROM users;""")
+    cursor.execute("""SELECT username FROM users;""")
     users = cursor.fetchall()
     conn.commit()
     cursor.close()
     conn.close()
 
     return users
+
+def about_user(username):
+    conn = sqlite3.connect('table.db', check_same_thread=False)
+    cursor = conn.cursor()
+    cursor.execute(f"""SELECT pk, username, email, age FROM users WHERE username="{username}";""")
+    user = cursor.fetchone()
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return user
+
+def delete_user_info(username):
+    conn = sqlite3.connect('table.db', check_same_thread=False)
+    cursor = conn.cursor()
+    cursor.execute(f"""SELECT pk FROM users WHERE username="{username}";""")
+    pk = cursor.fetchone()[0]
+    cursor.execute(f"""DELETE FROM posts WHERE user_id="{pk}";""")
+    cursor.execute(f"""DELETE FROM users WHERE pk={pk};""")
+
+    conn.commit()
+    cursor.close()
+    conn.close()

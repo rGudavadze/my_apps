@@ -74,23 +74,25 @@ def delete_post(post_id):
 def admin_dashboard():
     conn = sqlite3.connect('table.db', check_same_thread=False)
     cursor = conn.cursor()
-    cursor.execute("""SELECT post FROM posts ORDER BY post_date DESC;""")
+    cursor.execute("""SELECT post FROM posts WHERE post_date >= datetime('now','-1 day') ORDER BY post_date DESC;""")
     posts = cursor.fetchall()
     cursor.execute("""SELECT COUNT(*) FROM users""")
     users_count = cursor.fetchone()[0]
     cursor.execute("""SELECT COUNT(*) FROM posts""")
     lists_count = cursor.fetchone()[0]
+    cursor.execute("""SELECT COUNT(*) FROM users WHERE reg_date >= datetime('now','-1 day');""")
+    lastday = cursor.fetchone()[0]
 
     conn.commit()
     cursor.close()
     conn.close()
 
-    return posts, users_count, lists_count
+    return posts, users_count, lists_count, lastday
 
-def users_for_admin():
+def users_for_admin(number):
     conn = sqlite3.connect('table.db', check_same_thread=False)
     cursor = conn.cursor()
-    cursor.execute("""SELECT username FROM users;""")
+    cursor.execute(f"""SELECT username FROM users LIMIT {50} OFFSET {(number-1)*50};""")
     users = cursor.fetchall()
     conn.commit()
     cursor.close()
@@ -120,3 +122,15 @@ def delete_user_info(username):
     conn.commit()
     cursor.close()
     conn.close()
+
+def admin_login(email, password):
+    conn = sqlite3.connect('table.db', check_same_thread=False)
+    cursor = conn.cursor()
+    cursor.execute(f"""SELECT email, password FROM admin WHERE email='{email}';""")
+    user = cursor.fetchone()
+    
+    conn.commit()
+    cursor.close()
+    conn.close()
+    
+    return user

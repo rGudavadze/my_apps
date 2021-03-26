@@ -3,14 +3,19 @@
 {% block head %}<title>All Users</title>{% endblock %}
 
 {% block body %}
-    <h1>All signed up Users</h1>
-    <br>
-    <h1>Username:</h1>
-    {% for user in users %}
-    <form>
-        <input type="hidden" name="user" value="{{user[0]}}">
-        <h1><a href="/admin_users/{{user[0]}}">{{user[0]}}</a></h1>
-    </form>
-    {% endfor %}
-
+    {% if users %}
+        <h1>All signed up Users</h1>
+        <br>
+        <h1>Username:</h1>
+        {% for user in users %}
+        <form>
+            <input type="hidden" name="user" value="{{user[0]}}">
+            <h1><a href="/admin/users/{{user[0]}}">{{user[0]}}</a></h1>
+        </form>
+        {% endfor %}
+        <br><br>
+        {% if len_users %}
+            <a href="/admin/users/{{number+1}}">More</a>
+        {% endif %}
+    {% endif %}
 {% endblock %}

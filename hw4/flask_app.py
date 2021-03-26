@@ -94,14 +94,30 @@ def logout():
 
 @app.route('/admin', methods=['GET', 'POST'])
 def admin_login():
-    return render_template('admin_login.html')
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
 
-@app.route('/admin_users')
-def admin_users():
-    users = model.users_for_admin()
-    return render_template('admin_users.html', users=users)
+        admin = model.admin_login(email, password)
+        if admin:
+            if admin[1] == password:
+                session.pop('username', None)
+                session['username'] = admin[0]
+                return redirect(url_for('admin_dashboard'))
+            else:
+                return render_template('admin_login.html', message="Password is incorrect")
+        else:
+            return render_template('admin_login.html', message="You are not admin")
+    else:
+        return render_template('admin_login.html')
 
-@app.route('/admin_users/<user>')
+
+@app.route('/admin/users/<int:number>')
+def admin_users(number):
+    users = model.users_for_admin(number)
+    return render_template('admin_users.html', users=users, number=number, len_users=len(users)==50)
+
+@app.route('/admin/users/<user>')
 def user_info(user):
     info = model.about_user(user)
     return render_template("user_info.html", user=info)
@@ -114,8 +130,8 @@ def delete_user(user):
 
 @app.route('/admin_dashboard')
 def admin_dashboard():
-    posts, users_count, lists_count = model.admin_dashboard()
-    return render_template('admin_dashboard.html', posts=posts, users_count=users_count, lists_count=lists_count)
+    posts, users_count, lists_count, lastday = model.admin_dashboard()
+    return render_template('admin_dashboard.html', posts=posts, users_count=users_count, lists_count=lists_count, lastday=lastday)
 
 @app.route('/getsession')
 def getsession():

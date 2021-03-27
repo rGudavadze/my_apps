@@ -111,27 +111,43 @@ def admin_login():
     else:
         return render_template('admin_login.html')
 
+@app.route('/admin/users')
+def admin_userss():
+    return redirect('/users/1')
 
 @app.route('/admin/users/<int:number>')
 def admin_users(number):
-    users = model.users_for_admin(number)
-    return render_template('admin_users.html', users=users, number=number, len_users=len(users)==50)
+    if 'username' in session and session['username'] in model.check_admin():
+        users = model.users_for_admin(number)
+        return render_template('admin_users.html', users=users, number=number, len_users=len(users)==50)
+
+    else:
+        return redirect(url_for('login'))
 
 @app.route('/admin/users/<user>')
 def user_info(user):
-    info = model.about_user(user)
-    return render_template("user_info.html", user=info)
+    if 'username' in session and session['username'] in model.check_admin():
+        info = model.about_user(user)
+        return render_template("user_info.html", user=info)
+    else:
+        return redirect(url_for('login'))
 
 @app.route('/delete/<user>', methods=['POST'])
 def delete_user(user):
-    username = request.form.get('user')
-    model.delete_user_info(username)
-    return redirect(url_for('admin_users'))
+    if 'username' in session and session['username'] in model.check_admin():
+        username = request.form.get('user')
+        model.delete_user_info(username)
+        return redirect(url_for('admin_users'))
+    else:
+        return redirect(url_for('login'))
 
 @app.route('/admin_dashboard')
 def admin_dashboard():
-    posts, users_count, lists_count, lastday = model.admin_dashboard()
-    return render_template('admin_dashboard.html', posts=posts, users_count=users_count, lists_count=lists_count, lastday=lastday)
+    if 'username' in session and session['username'] in model.check_admin():
+        posts, users_count, lists_count, lastday = model.admin_dashboard()
+        return render_template('admin_dashboard.html', posts=posts, users_count=users_count, lists_count=lists_count, lastday=lastday)
+    else:
+        return redirect(url_for('login'))
 
 @app.route('/getsession')
 def getsession():

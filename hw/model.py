@@ -134,3 +134,15 @@ def admin_login(email, password):
     conn.close()
     
     return user
+
+def check_admin():
+    conn = sqlite3.connect('table.db', check_same_thread=False)
+    cursor = conn.cursor()
+    cursor.execute(f"""SELECT email FROM admin;""")
+    user = cursor.fetchall()[0]
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return user
